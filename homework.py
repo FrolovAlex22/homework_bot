@@ -44,7 +44,7 @@ def check_tokens():
 
 
 def send_message(bot, message):
-    """Функция для отправки сообщений"""
+    """Функция для отправки сообщений."""
     try:
         bot.send_message(TELEGRAM_CHAT_ID, message)
         logging.debug('Сообщение отправленно в Telegram.')
@@ -125,7 +125,6 @@ def parse_status(homework):
 
 def main():
     """Основная логика работы бота."""
-
     try:
         check_tokens()
     except Exception:
