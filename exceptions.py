@@ -1,0 +1,2 @@
+class ExceptionWithIncorrectStatus(Exception):
+    pass
