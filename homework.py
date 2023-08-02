@@ -38,10 +38,7 @@ HOMEWORK_VERDICTS = {
 
 def check_tokens():
     """Функция для проверки переменных окружения."""
-    if (PRACTICUM_TOKEN and TELEGRAM_TOKEN and TELEGRAM_CHAT_ID):
-        # Тут не совсем понял, правильно ли я сделал.
-        # Путаюсь потому что в задании явно указано сделать проверку.
-        return True
+    return (PRACTICUM_TOKEN and TELEGRAM_TOKEN and TELEGRAM_CHAT_ID)
 
 
 def send_message(bot, message):
@@ -104,13 +101,13 @@ def parse_status(homework):
 
 def main():
     """Основная логика работы бота."""
+    if not check_tokens():
+        logging.critical('Отсутствует какая то из переменных окружения')
+        sys.exit()
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
     timestamp = int(time.time())
     last_status = ''
     message = ''
-    if not check_tokens():
-        logging.critical('Отсутствует какая то из переменных окружения')
-        sys.exit()
     while True:
         try:
             response = get_api_answer(timestamp)
