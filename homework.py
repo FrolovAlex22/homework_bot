@@ -38,9 +38,9 @@ HOMEWORK_VERDICTS = {
 
 def check_tokens():
     """Функция для проверки переменных окружения."""
-    if not(PRACTICUM_TOKEN and TELEGRAM_TOKEN and TELEGRAM_CHAT_ID):
-        return False
-    else:
+    if (PRACTICUM_TOKEN and TELEGRAM_TOKEN and TELEGRAM_CHAT_ID):
+        # Тут не совсем понял, правильно ли я сделал.
+        # Путаюсь потому что в задании явно указано сделать проверку.
         return True
 
 
@@ -107,28 +107,25 @@ def main():
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
     timestamp = int(time.time())
     last_status = ''
+    message = ''
+    if not check_tokens():
+        logging.critical('Отсутствует какая то из переменных окружения')
+        sys.exit()
     while True:
-        if not check_tokens():
-            logging.critical('Отсутствует какая то из переменных окружения')
-            sys.exit()
         try:
             response = get_api_answer(timestamp)
             homeworks = check_response(response)
             if homeworks:
                 homework = homeworks[0]
                 message = parse_status(homework)
-            if message:
-                if message != last_status:
-                    send_message(bot, message)
-                    last_status = message
 
         except Exception as error:
             message = f'Сбой в работе программы: {error}'
+
+        finally:
             if message != last_status:
                 send_message(bot, message)
                 last_status = message
-
-        finally:
             time.sleep(RETRY_PERIOD)
 
 
